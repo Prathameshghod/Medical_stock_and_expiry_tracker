@@ -1,6 +1,6 @@
 :root {
 	--bg: #f2f4f7;           /* grey background */
-	--panel: #ffffff;        /* white panels */
+	--panel: #e6e7ea;       /* more greyish panels (was #f3f4f67e) */
 	--muted: #6b7280;        /* muted text */
 	--text: #111827;         /* main text */
 	--accent: #3b82f6;       /* light blue */
@@ -56,9 +56,59 @@ a { color: var(--text); text-decoration: none; }
 	backdrop-filter: blur(6px);
 	z-index: 50;
 }
-.topbar .container { display: flex; align-items: center; justify-content: space-between; }
-.topbar nav a { color: #1e3a8a; margin-left: 16px; }
-.topbar nav a:hover { color: var(--text); }
+.topbar .container { 
+	/* reduced horizontal padding and max-width so the topbar doesn't span too widely */
+	display: flex; 
+	align-items: center; 
+	justify-content: space-between; 
+	max-width: 980px;
+	margin: 0 auto;
+	padding: 12px 20px;
+}
+
+/* Brand section with logo and title */
+.topbar .brand {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	font-family: 'Poppins', Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+	font-weight: 700;
+	color: #0b3d91;
+	font-size: 24px;
+	margin: 0;
+}
+
+.topbar .brand img.logo {
+	width: 48px;
+	height: 48px;
+	object-fit: cover;
+	border-radius: 8px;
+	display: block;
+}
+
+/* Nav on the right */
+.topbar nav {
+	margin-left: auto;
+	display: flex;
+	gap: 12px;
+	align-items: center;
+}
+.topbar nav a { 
+	/* tightened spacing between nav links */
+	margin-left: 10px;       /* reduced from larger values */
+	padding: 6px 10px;
+	color: #1e3a8a; 
+	font-family: 'Poppins', Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+	font-weight: 700;
+	font-size: 18px;
+	border-radius: 8px;
+	transition: background .12s ease, color .12s ease, transform .08s ease;
+}
+.topbar nav a:hover { 
+	background: rgba(59,130,246,0.08);
+	color: var(--text); 
+	transform: translateY(-1px);
+}
 
 .card { background: var(--panel); border: 1px solid var(--border); border-radius: 16px; padding: 22px; margin: 22px 0; box-shadow: 0 10px 24px -12px var(--shadow); }
 .card h3 { margin: 0 0 12px; }
@@ -88,7 +138,7 @@ input:focus, select:focus {
 .radio-row { display: flex; gap: 16px; align-items: center; }
 .hint { color: var(--muted); font-size: 14px; margin-top: 6px; }
 
-.table-wrap { width: 100%; overflow: auto; border: 1px solid var(--border); border-radius: 14px; background: #ffffff; }
+.table-wrap { width: 100%; overflow: auto; border: 1px solid var(--border); border-radius: 14px; background: var(--panel); }
 table { width: 100%; border-collapse: collapse; }
 thead th {
 	text-align: left;
@@ -107,9 +157,9 @@ tbody tr:nth-child(even) { background: #fafafa; }
 tbody tr:hover { background: #f5f5f5; }
 
 /* 🔸 Table Row Highlights */
-tbody tr.ok { background: #ecfdf5; }        /* light green */
-tbody tr.warning { background: #fff8e1; }   /* light yellow */
-tbody tr.danger { background: #ffe4e6; }    /* light red */
+tbody tr.ok { background: #90ffcbff; }        /* light green */
+tbody tr.warning { background: #fbb479ff; }   /* light yellow */
+tbody tr.danger { background: #fb959bff; }    /* light red */
 
 /* 🔸 Badges (Visible Colors) */
 .badge {
@@ -134,6 +184,143 @@ tbody tr.danger { background: #ffe4e6; }    /* light red */
 .flash { padding: 10px 12px; border-radius: 10px; background: #ffffff; border: 1px solid var(--border); }
 .flash.success { background: #e9fdf5; border: 1px solid #c7f6e7; color: #065f46; }
 .flash.error { background: #ffeceb; border: 1px solid #ffd1cf; color: #7f1d1d; }
+
+/* --- Header / Uploader title and nav tweaks --- */
+/* Target common patterns for the page title inside the topbar */
+.topbar .brand,
+.topbar .title,
+.topbar h1 {
+	/* Prefer a slightly more geometric font, fall back to Inter */
+	font-family: 'Poppins', Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+	font-weight: 700;
+	color: #0b3d91;            /* deep blue for stronger contrast */
+	font-size: 26px;          /* larger title size */
+	letter-spacing: -0.2px;
+	margin: 0;
+}
+
+/* If the title contains a smaller role text like "(Admin)" */
+.topbar .brand small,
+.topbar .title small,
+.topbar h1 small {
+	font-family: inherit;
+	font-weight: 600;
+	color: rgba(11,61,145,0.85);
+	font-size: 14px;
+	margin-left: 8px;
+	vertical-align: middle;
+}
+
+/* Nav links (Home, Viewer) styling - make larger */
+.topbar nav a {
+	font-family: 'Poppins', Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+	font-weight: 800;             /* bolder */
+	color: #1e40af;
+	font-size: 22px;              /* increased size */
+	padding: 8px 14px;            /* more breathing room */
+	margin-left: 20px;
+	border-radius: 8px;
+	transition: background .12s ease, color .12s ease, transform .08s ease;
+}
+
+/* Optional: if you add classes to target specific links later */
+.topbar nav a.home,
+.topbar nav a.viewer { font-size: 22px; font-weight: 700; }
+
+/* Hover / active states for nav links to improve affordance */
+.topbar nav a:hover,
+.topbar nav a:focus,
+.topbar nav a.active {
+	background: rgba(59,130,246,0.08); /* subtle blue highlight */
+	color: #05316b;
+	transform: translateY(-1px);
+}
+
+/* Hero section layout: logo left, content right */
+.hero-section {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 60px;
+	max-width: 1120px;
+	margin: 0 auto;
+	padding: 40px 28px;      /* reduced from 80px to fill space better */
+	min-height: auto;        /* changed from 60vh to auto */
+}
+
+.hero-logo {
+	flex-shrink: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.hero-logo img {
+	width: 350px;            /* increased from 280px */
+	height: 350px;           /* increased from 280px */
+	object-fit: contain;
+	border-radius: 16px;
+	box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+}
+
+.hero-content {
+	flex: 1;
+	text-align: left;
+}
+
+.hero-content h1 {
+	font-size: 56px;         /* increased from 48px */
+	font-weight: 800;
+	color: var(--text);
+	margin: 0 0 16px 0;
+	font-family: 'Poppins', Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+	line-height: 1.2;
+}
+
+.hero-content .subtitle {
+	font-size: 22px;         /* increased from 20px */
+	color: var(--muted);
+	margin-bottom: 32px;
+}
+
+.hero-content .role-buttons {
+	justify-content: flex-start;
+	margin-bottom: 32px;
+	gap: 20px;               /* increase gap between buttons */
+}
+
+.hero-footer {
+	color: #93a3b8;
+	font-size: 18px;         /* increased from 16px */
+}
+
+/* Responsive: stack on mobile */
+@media (max-width: 768px) {
+	.hero-section {
+		flex-direction: column;
+		text-align: center;
+		gap: 40px;
+		padding: 40px 28px;  /* reduced from 60px */
+		min-height: auto;
+	}
+	
+	.hero-content {
+		text-align: center;
+	}
+	
+	.hero-logo img {
+		width: 240px;        /* increased from 200px */
+		height: 240px;
+	}
+	
+	.hero-content h1 {
+		font-size: 42px;     /* increased from 36px */
+	}
+	
+	.hero-content .role-buttons {
+		justify-content: center;
+	}
+}
 
 @media (max-width: 720px) {
 	.form-grid { grid-template-columns: 1fr; }

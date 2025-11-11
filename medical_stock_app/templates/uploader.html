@@ -7,12 +7,16 @@
 	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-	<header class="topbar">
+	<header class="topbar" role="banner">
 		<div class="container">
-			<h2>Uploader (Admin)</h2>
-			<nav>
-				<a href="{{ url_for('index') }}">Home</a>
-				<a href="{{ url_for('viewer') }}">Viewer</a>
+			<div class="brand">
+				<img class="logo" src="{{ url_for('static', filename='logo.ico') }}">
+
+				<span>Uploader (Admin)</span>
+			</div>
+			<nav aria-label="Main navigation">
+				<a class="home" href="{{ url_for('index') }}">Home</a>
+				<a class="viewer" href="{{ url_for('viewer') }}">Viewer</a>
 			</nav>
 		</div>
 	</header>

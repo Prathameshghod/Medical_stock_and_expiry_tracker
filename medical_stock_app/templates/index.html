@@ -4,17 +4,24 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Medical Stock and Expiry Tracker</title>
+	<link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
 	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-	<div class="container center">
-		<h1>Medical Stock and Expiry Tracker</h1>
-		<p class="subtitle">Track batches, quantities, and expiries at a glance.</p>
-		<div class="role-buttons">
-			<a class="btn" href="{{ url_for('uploader') }}">Uploader (Admin)</a>
-			<a class="btn secondary" href="{{ url_for('viewer') }}">Viewer (Staff)</a>
+	<!-- Hero section with logo left and content right -->
+	<div class="hero-section">
+		<div class="hero-logo">
+			<img src="{{ url_for('static', filename='logo.ico') }}" alt="Medical Stock and Expiry Tracker Logo">
 		</div>
-		<div style="margin-top:28px;color:#93a3b8;">No database required. Data lives in-memory while the app runs.</div>
+		<div class="hero-content">
+			<h1>Medical Stock and Expiry Tracker</h1>
+			<p class="subtitle">Track batches, quantities, and expiries at a glance.</p>
+			<div class="role-buttons">
+				<a class="btn" href="{{ url_for('uploader') }}">Uploader (Admin)</a>
+				<a class="btn secondary" href="{{ url_for('viewer') }}">Viewer (Staff)</a>
+			</div>
+			<div class="hero-footer">No database required. Data lives in-memory while the app runs.</div>
+		</div>
 	</div>
 </body>
 </html>
