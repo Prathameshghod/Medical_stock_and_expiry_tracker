@@ -1,9 +1,13 @@
 from datetime import datetime, timedelta
 import heapq
 from bisect import bisect_left, bisect_right
-from flask import Flask, render_template, request, redirect, url_for, flash
+import os
+from flask import Flask, render_template, request, redirect, url_for, flash, send_from_directory
 
-app = Flask(__name__)
+app = Flask(__name__, 
+    static_folder=os.path.join(os.path.dirname(__file__), 'static'),
+    static_url_path='/static'
+)
 app.secret_key = "dev-secret-key"  # For flash messages
 
 # ------------------------------
@@ -224,6 +228,7 @@ def viewer():
 			})
 	all_rows.sort(key=lambda r: parse_date(r["expiry"]))
 
+
 	# Map expiring tuples to enriched rows
 	expiring_rows = []
 	for exp_date, med, batch in expiring:
@@ -255,6 +260,29 @@ def viewer():
 		days=days,
 		today=today
 	)
+
+# Serve static files explicitly
+@app.route('/static/<path:filename>')
+def serve_static(filename):
+    return send_from_directory(
+        os.path.join(app.root_path, 'static'),
+        filename
+    )
+
+# Serve favicon directly
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(
+        os.path.join(app.root_path, 'static'),
+        'favicon.ico'
+    )
+
+@app.route('/favicon.png')
+def favicon_png():
+    return send_from_directory(
+        os.path.join(app.root_path, 'static'),
+        'logo.png'
+    )
 
 
 if __name__ == "__main__":
