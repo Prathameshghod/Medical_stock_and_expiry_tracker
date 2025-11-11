@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Uploader - Medical Stock</title>
+	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+	<header class="topbar">
+		<div class="container">
+			<h2>Uploader (Admin)</h2>
+			<nav>
+				<a href="{{ url_for('index') }}">Home</a>
+				<a href="{{ url_for('viewer') }}">Viewer</a>
+			</nav>
+		</div>
+	</header>
+
+	<main class="container">
+		{% with messages = get_flashed_messages(with_categories=true) %}
+			{% if messages %}
+				<div class="flash-area">
+					{% for category, message in messages %}
+						<div class="flash {{ category }}">{{ message }}</div>
+					{% endfor %}
+				</div>
+			{% endif %}
+		{% endwith %}
+
+		<section class="card">
+			<h3>Add / Update / Delete Batch</h3>
+			<form method="post" class="form-grid" onsubmit="return onUploaderSubmit(event);">
+				<div class="field">
+					<label for="medicine_name">Medicine Name</label>
+					<input type="text" id="medicine_name" name="medicine_name" placeholder="e.g., Paracetamol" required>
+				</div>
+				<div class="field">
+					<label for="batch_id">Batch ID</label>
+					<input type="text" id="batch_id" name="batch_id" placeholder="e.g., B001" required>
+				</div>
+				<div class="field">
+					<label for="expiry">Expiry Date</label>
+					<input type="date" id="expiry" name="expiry" required>
+				</div>
+				<div class="field">
+					<label for="qty">Quantity</label>
+					<input type="number" id="qty" name="qty" min="0" placeholder="e.g., 100" required>
+				</div>
+				<div class="field">
+					<label>Action</label>
+					<div class="radio-row">
+						<label><input type="radio" name="action" value="add_update" checked> Add / Update</label>
+						<label><input type="radio" name="action" value="delete"> Delete</label>
+					</div>
+				</div>
+				<div class="actions">
+					<button type="submit" class="btn">Submit</button>
+				</div>
+			</form>
+			<p class="hint">Tip: To update, enter the existing Medicine and Batch ID with new Expiry/Quantity.</p>
+		</section>
+
+		<section class="card">
+			<h3>Current Inventory</h3>
+			<div class="table-wrap">
+				<table>
+					<thead>
+						<tr>
+							<th>Medicine</th>
+							<th>Batch ID</th>
+							<th>Expiry</th>
+							<th>Days Left</th>
+							<th class="num">Quantity</th>
+						</tr>
+					</thead>
+					<tbody>
+					{% for row in medicines_view %}
+						<tr class="{{ row.level }}">
+							<td>{{ row.medicine }}</td>
+							<td>{{ row.batch_id }}</td>
+							<td>{{ row.expiry }}</td>
+							<td><span class="badge {{ row.level }}">{{ row.days_left }} days</span></td>
+							<td class="num">{{ row.qty }}</td>
+						</tr>
+					{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</section>
+	</main>
+
+	<script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
+
+

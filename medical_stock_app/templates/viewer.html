@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Viewer - Medical Stock</title>
+	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+	<header class="topbar">
+		<div class="container">
+			<h2>Viewer (Staff)</h2>
+			<nav>
+				<a href="{{ url_for('index') }}">Home</a>
+				<a href="{{ url_for('uploader') }}">Uploader</a>
+			</nav>
+		</div>
+	</header>
+
+	<main class="container">
+		<section class="card">
+			<div class="filter-row">
+				<h3>Expiry Alerts</h3>
+				<form id="daysForm" method="get" action="{{ url_for('viewer') }}">
+					<label for="days">Show expiring within</label>
+					<select id="days" name="days" onchange="onDaysChange()">
+						{% for opt in [7, 14, 30, 60, 90] %}
+							<option value="{{ opt }}" {% if days == opt %}selected{% endif %}>{{ opt }} days</option>
+						{% endfor %}
+					</select>
+				</form>
+			</div>
+			<div class="table-wrap">
+				<table>
+					<thead>
+						<tr>
+							<th>Medicine</th>
+							<th>Batch ID</th>
+							<th>Expiry</th>
+							<th>Days Left</th>
+							<th class="num">Quantity</th>
+						</tr>
+					</thead>
+					<tbody>
+					{% if expiring %}
+						{% for row in expiring %}
+							<tr class="{{ row.level }}">
+								<td>{{ row.medicine }}</td>
+								<td>{{ row.batch_id }}</td>
+								<td>{{ row.expiry }}</td>
+								<td><span class="badge {{ row.level }}">{{ row.days_left }} days</span></td>
+								<td class="num">{{ row.qty }}</td>
+							</tr>
+						{% endfor %}
+					{% else %}
+						<tr>
+							<td colspan="5" class="muted">No batches expiring within {{ days }} days.</td>
+						</tr>
+					{% endif %}
+					</tbody>
+				</table>
+			</div>
+		</section>
+
+		<section class="card">
+			<div class="filter-row">
+				<h3>All Stock</h3>
+				<div>
+					<input id="searchAll" type="text" placeholder="Search medicine or batch...">
+				</div>
+			</div>
+			<div class="legend-row">
+				<span class="legend danger">≤ 7 days</span>
+				<span class="legend warning">≤ 30 days</span>
+			</div>
+			<div class="table-wrap">
+				<table>
+					<thead>
+						<tr>
+							<th>Medicine</th>
+							<th>Batch ID</th>
+							<th>Expiry</th>
+							<th>Days Left</th>
+							<th class="num">Quantity</th>
+						</tr>
+					</thead>
+					<tbody id="allStockBody">
+					{% for row in all_rows %}
+						<tr class="{{ row.level }}">
+							<td>{{ row.medicine }}</td>
+							<td>{{ row.batch_id }}</td>
+							<td>{{ row.expiry }}</td>
+							<td><span class="badge {{ row.level }}">{{ row.days_left }} days</span></td>
+							<td class="num">{{ row.qty }}</td>
+						</tr>
+					{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</section>
+	</main>
+
+	<script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
+
+
